@@ -4,6 +4,8 @@
  */
 package sharian;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author CARLO
@@ -15,6 +17,9 @@ public class Sharian {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Menu ventana = new Menu();
+        ventana.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        ventana.setVisible(true);
     }
     
 }
