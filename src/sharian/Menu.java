@@ -111,8 +111,49 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_SaveFileActionPerformed
 
     private void LoadFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoadFileActionPerformed
-        // TODO add your handling code here:
-        
+        JFileChooser f = new JFileChooser();
+        f.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        f.setAcceptAllFileFilterUsed(false);
+        f.setFileFilter(new javax.swing.filechooser.FileFilter() {
+
+            @Override
+            public boolean accept(File file) {
+
+                if (file.isDirectory()) {
+                    return true;
+                }
+
+                return file.getName().toLowerCase().endsWith(".shr");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Archivo .shr";
+            }
+        });
+
+        int returnVal = f.showOpenDialog(this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+            File archivo = f.getSelectedFile();
+
+            try {
+
+                String contenido = Files.readString(archivo.toPath());
+
+                jtaCode.setText(contenido);
+
+            } catch (IOException ex) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Error al leer archivo",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
     }//GEN-LAST:event_LoadFileActionPerformed
 
     /**
