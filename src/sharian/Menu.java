@@ -4,20 +4,27 @@
  */
 package sharian;
 
+import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Font;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JViewport;
 
 /**
  *
  * @author CARLO
  */
 public class Menu extends javax.swing.JFrame {
-    
+
+    private int contador = 1;
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Menu.class.getName());
 
     /**
@@ -36,8 +43,13 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        TabbedPane = new javax.swing.JTabbedPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         jtaCode = new javax.swing.JTextArea();
+        btnAgregar = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
+        btnCargar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         SaveFile = new javax.swing.JMenuItem();
@@ -45,11 +57,114 @@ public class Menu extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(40, 42, 54));
 
+        jPanel1.setBackground(new java.awt.Color(53, 55, 70));
+        jPanel1.setForeground(new java.awt.Color(53, 55, 70));
+
+        TabbedPane.setForeground(new java.awt.Color(9, 0, 58));
+
+        jScrollPane2.setForeground(new java.awt.Color(62, 66, 68));
+        jScrollPane2.setViewportBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        jScrollPane2.setFont(new java.awt.Font("Cambria Math", 0, 14)); // NOI18N
+
+        jtaCode.setEditable(false);
+        jtaCode.setBackground(new java.awt.Color(40, 42, 54));
         jtaCode.setColumns(20);
+        jtaCode.setFont(new java.awt.Font("SimSun", 0, 18)); // NOI18N
+        jtaCode.setForeground(new java.awt.Color(229, 229, 229));
         jtaCode.setRows(5);
+        jtaCode.setText("Bienvenid@ a Sharian!!   Agrega una pestaña para comenzar :)");
+        jtaCode.setToolTipText("");
+        jtaCode.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        jtaCode.setCaretColor(new java.awt.Color(255, 255, 255));
+        jtaCode.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         jScrollPane2.setViewportView(jtaCode);
 
+        TabbedPane.addTab("tab1", jScrollPane2);
+
+        btnAgregar.setBackground(new java.awt.Color(66, 68, 86));
+        btnAgregar.setFont(new java.awt.Font("SimSun", 1, 14)); // NOI18N
+        btnAgregar.setForeground(new java.awt.Color(255, 255, 255));
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar.png"))); // NOI18N
+        btnAgregar.setText("Agregar");
+        btnAgregar.setBorder(null);
+        btnAgregar.setBorderPainted(false);
+        btnAgregar.setFocusPainted(false);
+        btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAgregar.setIconTextGap(3);
+        btnAgregar.setMargin(null);
+        btnAgregar.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        btnAgregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAgregar.addActionListener(this::btnAgregarActionPerformed);
+
+        btnGuardar.setBackground(new java.awt.Color(66, 68, 86));
+        btnGuardar.setFont(new java.awt.Font("SimSun", 1, 14)); // NOI18N
+        btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/disquete.png"))); // NOI18N
+        btnGuardar.setText("Guardar");
+        btnGuardar.setBorder(null);
+        btnGuardar.setBorderPainted(false);
+        btnGuardar.setFocusPainted(false);
+        btnGuardar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnGuardar.setIconTextGap(3);
+        btnGuardar.setMargin(null);
+        btnGuardar.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        btnGuardar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnGuardar.addActionListener(this::btnGuardarActionPerformed);
+
+        btnCargar.setBackground(new java.awt.Color(66, 68, 86));
+        btnCargar.setFont(new java.awt.Font("SimSun", 1, 14)); // NOI18N
+        btnCargar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCargar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/carpeta.png"))); // NOI18N
+        btnCargar.setText("Cargar");
+        btnCargar.setBorder(null);
+        btnCargar.setBorderPainted(false);
+        btnCargar.setFocusPainted(false);
+        btnCargar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnCargar.setIconTextGap(3);
+        btnCargar.setMargin(null);
+        btnCargar.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        btnCargar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnCargar.addActionListener(this::btnCargarActionPerformed);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCargar, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 126, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(TabbedPane)))
+                .addGap(21, 21, 21))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnCargar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(TabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
+                .addGap(45, 45, 45))
+        );
+
+        jMenuBar1.setBackground(new java.awt.Color(26, 27, 36));
+        jMenuBar1.setBorderPainted(false);
+        jMenuBar1.setPreferredSize(new java.awt.Dimension(70, 30));
+
+        jMenu1.setForeground(new java.awt.Color(255, 255, 255));
         jMenu1.setText("File");
 
         SaveFile.setText("Save");
@@ -62,6 +177,7 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu2.setForeground(new java.awt.Color(255, 255, 255));
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
 
@@ -71,17 +187,11 @@ public class Menu extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(82, 82, 82)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
-                .addGap(21, 21, 21))
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
-                .addGap(22, 22, 22))
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -89,6 +199,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void SaveFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveFileActionPerformed
         // TODO add your handling code here:
+        JTextArea tabActual = tabActual();
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Guardar Script de Sharian");
         int seleccion = fileChooser.showSaveDialog(this);
@@ -97,23 +208,26 @@ public class Menu extends javax.swing.JFrame {
             String ruta = archivo.getAbsolutePath();
 
             if (!ruta.endsWith(".shr")) {
-                ruta =ruta + ".shr";
+                ruta = ruta + ".shr";
             }
 
             try (FileWriter writer = new FileWriter(ruta)) {
-                writer.write(jtaCode.getText());
+                writer.write(tabActual.getText());
                 JOptionPane.showMessageDialog(this, "Archivo guardado en: " + ruta);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "Error al guardar el archivo", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-                
+
     }//GEN-LAST:event_SaveFileActionPerformed
 
     private void LoadFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoadFileActionPerformed
         JFileChooser f = new JFileChooser();
+
         f.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
         f.setAcceptAllFileFilterUsed(false);
+
         f.setFileFilter(new javax.swing.filechooser.FileFilter() {
 
             @Override
@@ -142,7 +256,25 @@ public class Menu extends javax.swing.JFrame {
 
                 String contenido = Files.readString(archivo.toPath());
 
-                jtaCode.setText(contenido);
+                JTextArea area = new JTextArea();
+
+                area.setBackground(new Color(40, 42, 54));
+                area.setForeground(new Color(229,229,229));
+                area.setCaretColor(Color.WHITE);
+                area.setFont(new Font("SimSun", Font.PLAIN, 18));
+
+                area.setText(contenido);
+
+                JScrollPane scroll = new JScrollPane(area);
+
+                scroll.setBorder(null);
+
+                TabbedPane.addTab(
+                        archivo.getName(),
+                        scroll
+                );
+
+                TabbedPane.setSelectedComponent(scroll);
 
             } catch (IOException ex) {
 
@@ -155,6 +287,119 @@ public class Menu extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_LoadFileActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        JTextArea area = new JTextArea();
+
+        area.setBackground(new Color(40, 42, 54));
+        area.setForeground(new Color(229,229,229));
+        area.setCaretColor(Color.WHITE);
+        area.setFont(new Font("SimSun", Font.PLAIN, 18));
+
+        JScrollPane scroll = new JScrollPane(area);
+
+        TabbedPane.addTab(
+                "Archivo" + contador + ".shr",
+                scroll
+        );
+
+        contador++;
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        JTextArea tabActual = tabActual();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Guardar Script de Sharian");
+        int seleccion = fileChooser.showSaveDialog(this);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File archivo = fileChooser.getSelectedFile();
+            String ruta = archivo.getAbsolutePath();
+
+            if (!ruta.endsWith(".shr")) {
+                ruta = ruta + ".shr";
+            }
+
+            try (FileWriter writer = new FileWriter(ruta)) {
+                writer.write(tabActual.getText());
+                JOptionPane.showMessageDialog(this, "Archivo guardado en: " + ruta);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Error al guardar el archivo", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
+        JFileChooser f = new JFileChooser();
+
+        f.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        f.setAcceptAllFileFilterUsed(false);
+
+        f.setFileFilter(new javax.swing.filechooser.FileFilter() {
+
+            @Override
+            public boolean accept(File file) {
+
+                if (file.isDirectory()) {
+                    return true;
+                }
+
+                return file.getName().toLowerCase().endsWith(".shr");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Archivo .shr";
+            }
+        });
+
+        int returnVal = f.showOpenDialog(this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+            File archivo = f.getSelectedFile();
+
+            try {
+
+                String contenido = Files.readString(archivo.toPath());
+
+                JTextArea area = new JTextArea();
+
+                area.setBackground(new Color(40, 42, 54));
+                area.setForeground(new Color(229,229,229));
+                area.setCaretColor(Color.WHITE);
+                area.setFont(new Font("SimSun", Font.PLAIN, 18));
+
+                area.setText(contenido);
+
+                JScrollPane scroll = new JScrollPane(area);
+
+                scroll.setBorder(null);
+
+                TabbedPane.addTab(
+                        archivo.getName(),
+                        scroll
+                );
+
+                TabbedPane.setSelectedComponent(scroll);
+
+            } catch (IOException ex) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Error al leer archivo",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
+    }//GEN-LAST:event_btnCargarActionPerformed
+
+    private JTextArea tabActual() {
+        JScrollPane scroll = (JScrollPane) TabbedPane.getSelectedComponent();
+        JViewport viewport = scroll.getViewport();
+        return (JTextArea) viewport.getView();
+    }
 
     /**
      * @param args the command line arguments
@@ -181,12 +426,18 @@ public class Menu extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> new Menu().setVisible(true));
     }
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem LoadFile;
     private javax.swing.JMenuItem SaveFile;
+    private javax.swing.JTabbedPane TabbedPane;
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnCargar;
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jtaCode;
     // End of variables declaration//GEN-END:variables
