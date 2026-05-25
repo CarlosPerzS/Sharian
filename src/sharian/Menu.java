@@ -6,6 +6,7 @@ package sharian;
 
 import analizadorLexico.Tokens;
 import analizadorLexico.Lexer;
+import analizadorSintactico.Parser;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Font;
@@ -14,6 +15,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -51,34 +54,26 @@ public class Menu extends javax.swing.JFrame {
     JTextArea tabActual = tabActual();
     String codigo = tabActual.getText();
     Lexer scanner = new Lexer(new java.io.StringReader(codigo));
-    
+    List<TokenData> listaTokens = new ArrayList<>();
     try {
         while (true) {
             Tokens token = scanner.yylex();
             if (token == null) {
-                jtaConsola.append("--- Análisis finalizado ---\n");
                 break;
             }
-            switch (token) {
-                case ERROR:
-                    jtaConsola.append("Error léxico en: " + scanner.lexeme + "\n");
-                    break;
-                case RESERVADA:
-                    jtaConsola.append("Comando: " + scanner.lexeme + "\n");
-                    break;
-                case IDENTIFICADOR:
-                    jtaConsola.append("Identificador: " + scanner.lexeme + "\n");
-                    break;
-                case NUMERO:
-                    jtaConsola.append("Número: " + scanner.lexeme + "\n");
-                    break;
-                case TEXTO:
-                    jtaConsola.append("Cadena de texto: " + scanner.lexeme + "\n");
-                    break;
-                default: // Aquí caerán todos los símbolos como {, }, ;, :
-                    jtaConsola.append("Símbolo: " + scanner.lexeme + "\n");
-                    break;
+            if (token == Tokens.ERROR) {
+                jtaConsola.setText("ERROR: Simbolo desconocido: '" + scanner.lexeme + "'");
+                return; // Cortamos la ejecución aquí
             }
+            listaTokens.add(new TokenData(token, scanner.lexeme));
+        }
+        //analisis sintactico
+        if(!listaTokens.isEmpty()){
+            Parser parseador = new Parser(listaTokens);
+            jtaConsola.setText(parseador.analizarSintaxis());
+        }
+        else{
+            jtaConsola.setText("vacio");
         }
     } catch (java.io.IOException ex) {
         jtaConsola.append("Error fatal: " + ex.getMessage() + "\n");
@@ -133,6 +128,11 @@ public class Menu extends javax.swing.JFrame {
         jtaCode.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
         jtaCode.setCaretColor(new java.awt.Color(255, 255, 255));
         jtaCode.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jtaCode.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtaCodeKeyTyped(evt);
+            }
+        });
         jScrollPane2.setViewportView(jtaCode);
 
         TabbedPane.addTab("tab1", jScrollPane2);
@@ -187,7 +187,6 @@ public class Menu extends javax.swing.JFrame {
         btnCompilar.setForeground(new java.awt.Color(255, 255, 255));
         btnCompilar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/compilador.png"))); // NOI18N
         btnCompilar.setText("Compilar");
-        btnCompilar.setActionCommand("Compilar");
         btnCompilar.setBorder(null);
         btnCompilar.setBorderPainted(false);
         btnCompilar.setFocusPainted(false);
@@ -229,8 +228,8 @@ public class Menu extends javax.swing.JFrame {
                     .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCompilar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(TabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
-                .addGap(45, 45, 45))
+                .addComponent(TabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                .addGap(57, 57, 57))
         );
 
         jtaConsola.setColumns(20);
@@ -267,15 +266,15 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPaneConsola, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE))
+                    .addComponent(jScrollPaneConsola))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneConsola, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPaneConsola, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -483,6 +482,10 @@ public class Menu extends javax.swing.JFrame {
     private void btnCompilarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompilarActionPerformed
         analizarCodigo();
     }//GEN-LAST:event_btnCompilarActionPerformed
+
+    private void jtaCodeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtaCodeKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtaCodeKeyTyped
 
     private JTextArea tabActual() {
         JScrollPane scroll = (JScrollPane) TabbedPane.getSelectedComponent();
