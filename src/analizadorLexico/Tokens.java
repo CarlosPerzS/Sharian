@@ -16,5 +16,9 @@ public enum Tokens {
     PARENTESIS_A,
     PARENTESIS_C,
     COMA,
-    ERROR
+    ERROR,
+    TEXTO,
+    LLAVE_A,
+    LLAVE_C,
+    DOS_PUNTOS
 }

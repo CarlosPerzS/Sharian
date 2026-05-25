@@ -64,7 +64,7 @@ public class Menu extends javax.swing.JFrame {
                     jtaConsola.append("Error léxico en: " + scanner.lexeme + "\n");
                     break;
                 case RESERVADA:
-                    jtaConsola.append("Comando detectado: " + scanner.lexeme + "\n");
+                    jtaConsola.append("Comando: " + scanner.lexeme + "\n");
                     break;
                 case IDENTIFICADOR:
                     jtaConsola.append("Identificador: " + scanner.lexeme + "\n");
@@ -72,7 +72,10 @@ public class Menu extends javax.swing.JFrame {
                 case NUMERO:
                     jtaConsola.append("Número: " + scanner.lexeme + "\n");
                     break;
-                default:
+                case TEXTO:
+                    jtaConsola.append("Cadena de texto: " + scanner.lexeme + "\n");
+                    break;
+                default: // Aquí caerán todos los símbolos como {, }, ;, :
                     jtaConsola.append("Símbolo: " + scanner.lexeme + "\n");
                     break;
             }

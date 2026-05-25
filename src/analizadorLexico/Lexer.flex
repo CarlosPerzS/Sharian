@@ -3,6 +3,7 @@ import diccionario.palabrasReservadas;
 import static analizadorLexico.Tokens.*;
 %%
 %class Lexer
+%public
 %type Tokens
 L=[a-zA-Z_]+
 D=[0-9]+
@@ -31,16 +32,20 @@ espacio=[ ,\t,\r,\n]+
     lexeme = yytext();
     return Tokens.NUMERO; 
 }
-"(" { return Tokens.PARENTESIS_A; }
-")" { return Tokens.PARENTESIS_C; }
-"," { return Tokens.COMA; }
-";" { return Tokens.PUNTO_COMA; }
+
+\"[^\"]*\" {
+    lexeme = yytext();
+    return Tokens.TEXTO; 
+}
+
+"{" { lexeme = yytext(); return Tokens.LLAVE_A; }
+"}" { lexeme = yytext(); return Tokens.LLAVE_C; }
+":" { lexeme = yytext(); return Tokens.DOS_PUNTOS; }
+"(" { lexeme = yytext(); return Tokens.PARENTESIS_A; }
+")" { lexeme = yytext(); return Tokens.PARENTESIS_C; }
+"," { lexeme = yytext(); return Tokens.COMA; }
+";" { lexeme = yytext(); return Tokens.PUNTO_COMA; }
 . { 
-    lexeme = yytext(); // Capturamos el símbolo extraño
+    lexeme = yytext(); 
     return Tokens.ERROR; 
 }
-"(" { return Parentesis_A; }
-")" { return Parentesis_C; }
-"," { return Coma; }
-";" { return Punto_Coma; }
-. { return ERROR; }
