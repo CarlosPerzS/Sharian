@@ -4,12 +4,15 @@
  */
 package sharian;
 
+import analizadorLexico.Tokens;
+import analizadorLexico.Lexer;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.file.Files;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -31,8 +34,53 @@ public class Menu extends javax.swing.JFrame {
      * Creates new form Menu
      */
     public Menu() {
+        jtaConsola = new javax.swing.JTextArea();
+        jtaConsola.setEditable(false);
+        jtaConsola.setBackground(new java.awt.Color(40, 42, 54));
+        jtaConsola.setForeground(new java.awt.Color(0, 255, 0));
+        jtaConsola.setFont(new java.awt.Font("Monospaced", 0, 14));
+        jtaConsola.setRows(5);
+
+        jScrollPaneConsola = new javax.swing.JScrollPane(jtaConsola);
+        jScrollPaneConsola.setBorder(new javax.swing.border.TitledBorder("Consola de Salida"));
         initComponents();
     }
+    
+    private void analizarCodigo() {
+    jtaConsola.setText("");
+    JTextArea tabActual = tabActual();
+    String codigo = tabActual.getText();
+    Lexer scanner = new Lexer(new java.io.StringReader(codigo));
+    
+    try {
+        while (true) {
+            Tokens token = scanner.yylex();
+            if (token == null) {
+                jtaConsola.append("--- Análisis finalizado ---\n");
+                break;
+            }
+            switch (token) {
+                case ERROR:
+                    jtaConsola.append("Error léxico en: " + scanner.lexeme + "\n");
+                    break;
+                case RESERVADA:
+                    jtaConsola.append("Comando detectado: " + scanner.lexeme + "\n");
+                    break;
+                case IDENTIFICADOR:
+                    jtaConsola.append("Identificador: " + scanner.lexeme + "\n");
+                    break;
+                case NUMERO:
+                    jtaConsola.append("Número: " + scanner.lexeme + "\n");
+                    break;
+                default:
+                    jtaConsola.append("Símbolo: " + scanner.lexeme + "\n");
+                    break;
+            }
+        }
+    } catch (java.io.IOException ex) {
+        jtaConsola.append("Error fatal: " + ex.getMessage() + "\n");
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -50,6 +98,9 @@ public class Menu extends javax.swing.JFrame {
         btnAgregar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         btnCargar = new javax.swing.JButton();
+        btnCompilar = new javax.swing.JButton();
+        jScrollPaneConsola = new javax.swing.JScrollPane();
+        jtaConsola = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         SaveFile = new javax.swing.JMenuItem();
@@ -128,6 +179,22 @@ public class Menu extends javax.swing.JFrame {
         btnCargar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnCargar.addActionListener(this::btnCargarActionPerformed);
 
+        btnCompilar.setBackground(new java.awt.Color(66, 68, 86));
+        btnCompilar.setFont(new java.awt.Font("SimSun", 1, 14)); // NOI18N
+        btnCompilar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCompilar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/compilador.png"))); // NOI18N
+        btnCompilar.setText("Compilar");
+        btnCompilar.setActionCommand("Compilar");
+        btnCompilar.setBorder(null);
+        btnCompilar.setBorderPainted(false);
+        btnCompilar.setFocusPainted(false);
+        btnCompilar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnCompilar.setIconTextGap(3);
+        btnCompilar.setMargin(null);
+        btnCompilar.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        btnCompilar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnCompilar.addActionListener(this::btnCompilarActionPerformed);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -141,7 +208,9 @@ public class Menu extends javax.swing.JFrame {
                         .addComponent(btnCargar, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 126, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCompilar, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addComponent(TabbedPane)))
@@ -154,11 +223,16 @@ public class Menu extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCargar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCompilar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(TabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
+                .addComponent(TabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
                 .addGap(45, 45, 45))
         );
+
+        jtaConsola.setColumns(20);
+        jtaConsola.setRows(5);
+        jScrollPaneConsola.setViewportView(jtaConsola);
 
         jMenuBar1.setBackground(new java.awt.Color(26, 27, 36));
         jMenuBar1.setBorderPainted(false);
@@ -187,11 +261,19 @@ public class Menu extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneConsola, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPaneConsola, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -395,6 +477,10 @@ public class Menu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCargarActionPerformed
 
+    private void btnCompilarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompilarActionPerformed
+        analizarCodigo();
+    }//GEN-LAST:event_btnCompilarActionPerformed
+
     private JTextArea tabActual() {
         JScrollPane scroll = (JScrollPane) TabbedPane.getSelectedComponent();
         JViewport viewport = scroll.getViewport();
@@ -433,12 +519,15 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTabbedPane TabbedPane;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnCargar;
+    private javax.swing.JButton btnCompilar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPaneConsola;
     private javax.swing.JTextArea jtaCode;
+    private javax.swing.JTextArea jtaConsola;
     // End of variables declaration//GEN-END:variables
 }
